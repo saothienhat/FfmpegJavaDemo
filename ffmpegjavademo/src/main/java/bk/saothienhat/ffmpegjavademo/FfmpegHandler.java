@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import bk.saothienhat.ffmpegjavademo.model.AppConfig;
 import bk.saothienhat.ffmpegjavademo.model.AppConst;
 import bk.saothienhat.ffmpegjavademo.model.FFMPEGCommandType;
+import bk.saothienhat.ffmpegjavademo.model.FFMPEGOptionType;
 import bk.saothienhat.ffmpegjavademo.model.FileType;
 import bk.saothienhat.ffmpegjavademo.model.FfmpegCommand;
 import bk.saothienhat.ffmpegjavademo.utils.Logger;
@@ -59,7 +60,7 @@ public class FfmpegHandler {
      */
     public void convertVideoBasic(String inputFilePath, String outputFilePath){   
         // Command: ffmpeg -i your_input_file your_output_file
-        convert(AppConst.FFMPEG_OPTION_I, inputFilePath, AppConst.FFMPEG_OPTION_CONVERT_EMPTY, outputFilePath);
+        convert(FFMPEGOptionType.I.getOption(), inputFilePath, FFMPEGOptionType.EMPTY.getOption(), outputFilePath);
     }
     
     
@@ -107,9 +108,9 @@ public class FfmpegHandler {
             InputStreamReader isr = new InputStreamReader(stderr);
             BufferedReader br = new BufferedReader(isr);
             String line = "";
-            while ( (line = br.readLine()) != null){                
-                Logger.log("FfmpegHandler.execuse(): Running " + command.getCommandType().getCommandDescription() + " ......................");
-//                Logger.log("\tLine: " + line);
+            while ( (line = br.readLine()) != null){
+//              Logger.log("FfmpegHandler.execuse(): Running " + command.getCommandType().getCommandDescription() + " ......................");
+              Logger.log("\tExecusion output: " + line);
             }
                          
             
@@ -137,8 +138,8 @@ public class FfmpegHandler {
      */
     public void getVideoFileInfo(String inputFilePath, boolean isHideBanner) {
         Logger.log("FfmpegHandler.getVideoFileInfo(): get file info of Video file: " + inputFilePath);
-        String hideBannerStr = (isHideBanner) ? (" " + AppConst.FFMPEG_OPTION_HIDE_BANNER) : "";
-        String exeCommand = getFfmpegPath() + " " + AppConst.FFMPEG_OPTION_I + " " + inputFilePath + hideBannerStr;
+        String hideBannerStr = (isHideBanner) ? (" " + FFMPEGOptionType.HIDE_BANNER.getOption()) : "";
+        String exeCommand = getFfmpegPath() + " " + FFMPEGOptionType.I.getOption() + " " + inputFilePath + hideBannerStr;
         
         FfmpegCommand command = new FfmpegCommand(exeCommand, FFMPEGCommandType.COMPRESS_MEDIA_FILE);
         execute(command);
@@ -156,10 +157,10 @@ public class FfmpegHandler {
         
         if(FileType.AVI.getFileType().equalsIgnoreCase(fileType.getFileType())){
             // ffmpeg -i input.avi -vcodec msmpeg4v2 output.avi
-            exeCommand = getFfmpegPath() + " " + AppConst.FFMPEG_OPTION_I + " " + inputFilePath + " -vcodec msmpeg4v2 " + outputFilePath;
+            exeCommand = getFfmpegPath() + " " + FFMPEGOptionType.I.getOption() + " " + inputFilePath + " -vcodec msmpeg4v2 " + outputFilePath;
         } else if(FileType.MP4.getFileType().equalsIgnoreCase(fileType.getFileType())){
             // ffmpeg -i input.mp4 -acodec mp2 output.mp4
-            exeCommand = getFfmpegPath() + " " + AppConst.FFMPEG_OPTION_I + " " + inputFilePath + " -acodec mp2 " + outputFilePath;
+            exeCommand = getFfmpegPath() + " " + FFMPEGOptionType.I.getOption() + " " + inputFilePath + " -acodec mp2 " + outputFilePath;
         }
         
         if(!exeCommand.isEmpty()){
@@ -168,6 +169,9 @@ public class FfmpegHandler {
         }
         
     }
+    
+    
+    
     
 
 }
