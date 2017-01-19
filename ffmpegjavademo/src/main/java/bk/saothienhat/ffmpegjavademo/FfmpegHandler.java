@@ -26,7 +26,7 @@ public class FfmpegHandler {
      * @return the ffmpegPath
      */
     public String getFfmpegPath() {
-        return ffmpegPath;
+        return ffmpegPath; 
     }
     
     /**
