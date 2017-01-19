@@ -12,6 +12,10 @@ public class App
     public static void main( String[] args )
     {
         Logger.log("==============================  FFMPEG with JAVA demo   ==============================");
+        Logger.log("===  FFMPEG website: " + AppConfig.FFMPEG_WEBSITE);
+        Logger.log("===  FFMPEG vesion: " + AppConfig.FFMPEG_VERSION);
+        Logger.log("======================================================================================\n");
+        
         long startTime = System.currentTimeMillis();
         
         String inputFilePath = "D://your_file.avi";
@@ -22,7 +26,8 @@ public class App
         
         
         FfmpegHandler ffmpegHandler = new FfmpegHandler();
-        ffmpegHandler.setFfmpegPath(AppConfig.FFMPEG_4_WINDOW_PATH);       
+        String ffmpegPath4Window = "D://your_ffmpeg.exe_file_path_on_PC.exe"; // Ex: D://ffmpeg.exe
+        ffmpegHandler.setFfmpegPath(ffmpegPath4Window);       
 
         /* Get video file info */
         // ffmpegHandler.getVideoFileInfo(inputFilePath, false);  
