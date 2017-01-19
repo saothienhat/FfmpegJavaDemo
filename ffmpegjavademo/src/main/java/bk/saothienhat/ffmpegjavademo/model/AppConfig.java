@@ -11,7 +11,7 @@ public final class AppConfig {
     public static final String FFMPEG_WEBSITE = "http://www.ffmpeg.org/index.html";
     public static final String FFMPEG_VERSION = "3.2.1";
     
-    
+    // Place you put the ffmpeg.exe in Window
     public static final String FFMPEG_4_WINDOW_PATH  = "src/main/java/libs/ffmpeg.exe";
     
 
