@@ -9,11 +9,16 @@ public class App
     {
         Logger.log("==============================  FFMPEG with JAVA demo   ==============================");
         
-        String inputFilePath = "D://PROJECTS/KOGA_VN/ATMViewer/05_DATA/testData/multi_audio/00D2023F_DV2.avi";
-        String outputFilePath = "D://binh_new_new.mp4";
+        String inputFilePath = "D://your_avi_file.avi";
+        String outputFilePath = "D://Converted_Media_File.mp4";
         
         FfmpegHandler ffmpegHandler = new FfmpegHandler();
+        
         ffmpegHandler.convertVideoBasic(inputFilePath, outputFilePath);
         
+//        ffmpegHandler.getVideoFileInfo(inputFilePath, true);        
+
     }
+    
+
 }

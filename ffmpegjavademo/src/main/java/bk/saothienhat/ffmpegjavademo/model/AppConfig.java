@@ -9,7 +9,7 @@ package bk.saothienhat.ffmpegjavademo.model;
  */
 public final class AppConfig {
     public static final String FFMPEG_WEBSITE = "http://www.ffmpeg.org/index.html";
-    public static final String FFMPEG_VERSION = "1.0.0";
+    public static final String FFMPEG_VERSION = "3.2.1";
     
     
     public static final String FFMPEG_4_WINDOW_PATH  = "src/main/java/libs/ffmpeg.exe";
