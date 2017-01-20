@@ -25,6 +25,7 @@ public class FfmpegHandler {
     
     private String ffmpegPath;
     private int logLevel;
+    private long exeTime; // (seconds)
     
     
     /**
@@ -44,7 +45,13 @@ public class FfmpegHandler {
         this.ffmpegPath = ffmpegPath;
     }
     
+    public void setExeTime(long value){
+        this.exeTime = value;
+    }
     
+    public long getExeTime(){
+        return this.exeTime;
+    }
     
     
     /**
@@ -68,9 +75,10 @@ public class FfmpegHandler {
      * @param inputFilePath
      * @param outputFilePath
      */
-    public void convertVideoBasic(String inputFilePath, String outputFilePath){   
+    public FFMPEGRespond convertVideoBasic(String inputFilePath, String outputFilePath){   
         Logger.log("FfmpegHandler.convertVideoBasic(): start converting...");
-        convert(FFMPEGOptionType.I.getOption(), inputFilePath, FFMPEGOptionType.EMPTY.getOption(), outputFilePath);
+        FFMPEGRespond ffmpegRespond = convert(FFMPEGOptionType.I.getOption(), inputFilePath, FFMPEGOptionType.EMPTY.getOption(), outputFilePath);
+        return ffmpegRespond;
     }
     
     
@@ -86,7 +94,7 @@ public class FfmpegHandler {
      * @param convertOption
      * @param outputFilePath
      */
-    public void convert(String option, String inputFilePath, String convertOption, String outputFilePath) {
+    public FFMPEGRespond convert(String option, String inputFilePath, String convertOption, String outputFilePath) {
         String exeCommand = getFfmpegPath() + " " + option + " " + inputFilePath + " " + convertOption + " " + outputFilePath;
         Logger.log("FfmpegHandler.convertVideoBasic(): start converting with Convert Info: ");
         Logger.log("\tInput:  " + inputFilePath);
@@ -95,7 +103,8 @@ public class FfmpegHandler {
         Logger.log("\tConvert Option:  " + convertOption);
         
         FfmpegCommand command = new FfmpegCommand(exeCommand, FFMPEGCommandType.CONVERT_MEDIA_FILE);        
-        execute(command);
+        FFMPEGRespond ffmpegRespond = execute(command);
+        return ffmpegRespond;
     }
     
     /**
@@ -168,13 +177,14 @@ public class FfmpegHandler {
      * @param isHideBanner: The -hide_banner option is used to hide a copyright notice shown my FFMPEG, 
      *      such as build options and library versions. This option can be used to suppress printing this information.
      */
-    public void getVideoFileInfo(String inputFilePath, boolean isHideBanner) {
+    public FFMPEGRespond getVideoFileInfo(String inputFilePath, boolean isHideBanner) {
         Logger.log("FfmpegHandler.getVideoFileInfo(): get file info of Video file: " + inputFilePath);
         String hideBannerStr = (isHideBanner) ? (" " + FFMPEGOptionType.HIDE_BANNER.getOption()) : "";
         String exeCommand = getFfmpegPath() + " " + FFMPEGOptionType.I.getOption() + " " + inputFilePath + hideBannerStr;
         
         FfmpegCommand command = new FfmpegCommand(exeCommand, FFMPEGCommandType.COMPRESS_MEDIA_FILE);
-        execute(command);
+        FFMPEGRespond ffmpegRespond = execute(command);
+        return ffmpegRespond;
     }
 
     /**

@@ -11,10 +11,12 @@ import java.util.List;
  *
  */
 public class FFMPEGRespond {
+    public static final int EXE_UNKNOWN = -1;
     public static final int EXE_FAIL = 0;
     public static final int EXE_SUCCESS = 1;
     private List<String> errors;
     private int executionResult;
+    private long exeTime; // (seconds)
 
     /**
      * Construct new instance of FFMPEGRespond
@@ -27,8 +29,18 @@ public class FFMPEGRespond {
     
     public FFMPEGRespond(){
         this.errors = new ArrayList<String>();
+        this.executionResult = EXE_UNKNOWN;
+        this.exeTime = 0;
     }
 
+    
+    public void setExeTime(long value){
+        this.exeTime = value;
+    }
+    
+    public long getExeTime(){
+        return this.exeTime;
+    }
 
     /**
      * Method to get field errors as type List<String>
