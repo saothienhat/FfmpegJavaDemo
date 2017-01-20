@@ -9,7 +9,7 @@ package bk.saothienhat.ffmpegjavademo.model;
  */
 public enum FFMPEGOptionType {
     EMPTY( "", "" ), 
-    I( "-i", "NA" ),
+    I( "-i", "-identify option" ), 
     HIDE_BANNER( "-hide_banner",
             "-hide_banner is used to hide a copyright notice shown my ffmpeg, such as build options and library versions. This option can be used to suppress printing this information." ),
     ACODEC( "-acodec", "NA" ),
@@ -20,7 +20,8 @@ public enum FFMPEGOptionType {
     MPEG4( "mpeg4", "NA" ), 
     FLAGS( "-flags", "NA" ),
     AIC( "aic", "NA" ), 
-    MV4( "mv4", "NA" )
+    MV4( "mv4", "NA" ),
+    LOGLEVEL_ERROR("-loglevel error", "Log error")
     
     ;
     

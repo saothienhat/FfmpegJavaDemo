@@ -11,6 +11,10 @@ public class FfmpegCommand {
     private String command;
     private FFMPEGCommandType commandType;
     
+    public static final int LOGLEVEL_ALL = 0; // log all message of execution output
+    public static final int LOGLEVEL_ERROR = 1; // log Error of execution output only
+    public static final int LOGLEVEL_NO = 2; // Do not log anything
+    
     /**
      * Construct new instance of ffmpegCommand
      * @param command
@@ -54,8 +58,8 @@ public class FfmpegCommand {
     public void setCommandType(FFMPEGCommandType commandType) {
         this.commandType = commandType;
     }
-    
-    
+
+       
     
 
 }

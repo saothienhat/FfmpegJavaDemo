@@ -7,13 +7,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
-import bk.saothienhat.ffmpegjavademo.model.AppConfig;
-import bk.saothienhat.ffmpegjavademo.model.AppConst;
 import bk.saothienhat.ffmpegjavademo.model.FFMPEGCommandType;
 import bk.saothienhat.ffmpegjavademo.model.FFMPEGOptionType;
-import bk.saothienhat.ffmpegjavademo.model.FileType;
+import bk.saothienhat.ffmpegjavademo.model.FFMPEGRespond;
 import bk.saothienhat.ffmpegjavademo.model.FfmpegCommand;
+import bk.saothienhat.ffmpegjavademo.model.FileType;
 import bk.saothienhat.ffmpegjavademo.utils.Logger;
 
 /**
@@ -23,6 +24,7 @@ import bk.saothienhat.ffmpegjavademo.utils.Logger;
 public class FfmpegHandler {
     
     private String ffmpegPath;
+    private int logLevel;
     
     
     /**
@@ -49,17 +51,25 @@ public class FfmpegHandler {
      * Construct new instance of FfmpegHandler
      */
     public FfmpegHandler() {
-        
+        initialize();        
     }
 
     /**
-     * Method to convert video basically with convert command: ffmpeg -i input.mp4 output.avi
+     * Method to initialize
+     *
+     */
+    private void initialize() {
+        this.logLevel = FfmpegCommand.LOGLEVEL_ALL;
+    }
+
+    /**
+     * Method to convert video basically with convert command: ffmpeg -i your_input_file your_output_file
      *
      * @param inputFilePath
      * @param outputFilePath
      */
     public void convertVideoBasic(String inputFilePath, String outputFilePath){   
-        // Command: ffmpeg -i your_input_file your_output_file
+        Logger.log("FfmpegHandler.convertVideoBasic(): start converting...");
         convert(FFMPEGOptionType.I.getOption(), inputFilePath, FFMPEGOptionType.EMPTY.getOption(), outputFilePath);
     }
     
@@ -83,8 +93,8 @@ public class FfmpegHandler {
         Logger.log("\tOutput: " + outputFilePath);
         Logger.log("\tOption:  " + option);
         Logger.log("\tConvert Option:  " + convertOption);
-
-        FfmpegCommand command = new FfmpegCommand(exeCommand, FFMPEGCommandType.CONVERT_MEDIA_FILE);
+        
+        FfmpegCommand command = new FfmpegCommand(exeCommand, FFMPEGCommandType.CONVERT_MEDIA_FILE);        
         execute(command);
     }
     
@@ -93,7 +103,10 @@ public class FfmpegHandler {
      *
      * @param command
      */
-    private void execute(FfmpegCommand command){                
+    private FFMPEGRespond execute(FfmpegCommand command){ 
+        FFMPEGRespond ffmpegRespond = new FFMPEGRespond();
+        List<String> errorMessages = new ArrayList<String>();
+        boolean isLogLevelErrorOnly = ( getLogLevel() == FfmpegCommand.LOGLEVEL_ERROR );
         try {
             String exeCommand = command.getCommand();
             Logger.log("FfmpegHandler.execuse(): @@==============  Begin execute FFMPEG command: " + exeCommand);
@@ -108,24 +121,43 @@ public class FfmpegHandler {
             InputStreamReader isr = new InputStreamReader(stderr);
             BufferedReader br = new BufferedReader(isr);
             String line = "";
-            while ( (line = br.readLine()) != null){
-//              Logger.log("FfmpegHandler.execuse(): Running " + command.getCommandType().getCommandDescription() + " ......................");
-              Logger.log("\tExecusion output: " + line);
+            
+            while( (line = br.readLine()) != null ) {
+                // Logger.log("FfmpegHandler.execuse(): Running " + command.getCommandType().getCommandDescription() + " ......................");
+                Logger.log("\tExecusion output: " + line);
+                if(isLogLevelErrorOnly) {
+                    errorMessages.add(line);
+                }
             }
                          
             
             int exitVal = process.waitFor();
             Logger.log("FfmpegHandler.execuse(): Execute FFMPEG command Finished !!!!! Process exitValue: " + exitVal);
+            if( exitVal == 0 ) {
+                // Successful
+               ffmpegRespond.setExecutionResult(ffmpegRespond.EXE_SUCCESS);
+            }else{
+                // Fail/Error
+                ffmpegRespond.setExecutionResult(ffmpegRespond.EXE_FAIL);
+                ffmpegRespond.setErrors(errorMessages);
+            }
+            
             Logger.log("FfmpegHandler.execuse(): @@==============  Execute FFMPEG command DONE ======================@@");
         }
-        catch( IOException e ) {
-            e.printStackTrace();
-            Logger.error(e.getMessage());
+        catch( IOException e ) {            
+            Logger.error(e.getMessage());            
+            errorMessages.add(e.getMessage());
+            ffmpegRespond.setExecutionResult(ffmpegRespond.EXE_FAIL);
+            ffmpegRespond.setErrors(errorMessages);
         }
         catch( InterruptedException e ) {
-            e.printStackTrace();
             Logger.error(e.getMessage());
+            errorMessages.add(e.getMessage());
+            ffmpegRespond.setExecutionResult(ffmpegRespond.EXE_FAIL);
+            ffmpegRespond.setErrors(errorMessages);
         }
+        
+        return ffmpegRespond;
     }
 
     
@@ -168,6 +200,23 @@ public class FfmpegHandler {
             execute(command);
         }
         
+    }
+
+    /**
+     * Method to get field logLevel as type int
+     * @return the logLevel
+     */
+    public int getLogLevel() {
+        return logLevel;
+    }
+
+    /**
+     * Method to set value for field logLevel
+     *
+     * @param logLevel the logLevel to set
+     */
+    public void setLogLevel(int logLevel) {
+        this.logLevel = logLevel;
     }
     
     
