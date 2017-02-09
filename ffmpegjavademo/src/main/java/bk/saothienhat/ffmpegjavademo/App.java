@@ -1,5 +1,7 @@
 package bk.saothienhat.ffmpegjavademo;
 
+import java.io.File;
+
 import bk.saothienhat.ffmpegjavademo.model.AppConfig;
 import bk.saothienhat.ffmpegjavademo.model.AppConst;
 import bk.saothienhat.ffmpegjavademo.model.FFMPEGOptionType;
@@ -15,7 +17,8 @@ public class App {
 
         long startTime = System.currentTimeMillis();
 
-        String inputFilePath = "D://your_file.avi";
+//        String inputFilePath = "D://your_file.avi";
+        String inputFilePath = "D://PROJECTS/KOGA_VN/ATMViewer/05_DATA/testData/multi_audio/00D2023F_DV2.avi";
         String convertedMp4OutputFile = "D://Converted_Media_File.mp4";
         String compressedAVIOutputFile = "D://Compressed_Avi_Media_File.avi";
         String finalMp4OutputFile = "D://Final_Mp4_File.mp4";
@@ -67,6 +70,7 @@ public class App {
         String option = optionBuilder.toString();
         String convertOptions = convertOptionBuilder.toString();
 //        ffmpegHandler.convert(option, inputFilePath, convertOptions, finalMp4OutputFile);
+                
 
         long stopTime = System.currentTimeMillis();
         long exeTime = stopTime - startTime;
